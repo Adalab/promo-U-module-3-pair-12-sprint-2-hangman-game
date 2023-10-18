@@ -5,6 +5,10 @@ import '../styles/App.scss';
 import Header from './Header';
 import Dummy from './Dummy';
 import SolutionLetters from './SolutionLetters';
+import ErrorLetters from './ErrorLetters';
+import Form from './Form';
+
+
 
 function App() {
   let [numberOfErrors, setNumberOfErrors] = useState(0);
@@ -21,21 +25,7 @@ function App() {
     // Aquí ponemos un array vacío porque solo queremos que se llame a la API la primera vez
   }, []);
 
-  const renderSolutionLetters = () => {
-    const wordLetters = word.split('');
-    console.log(wordLetters);
-
-    return wordLetters // todas las letras buscadas por el user
-      .map((letter, index) => {
-        const exist = userLetters.includes(letter.toLowerCase());
-        return (
-          <li key={index} className="letter">
-            {exist ? letter : ''}
-          </li>
-        );
-      });
-  };
-
+  
   const renderErrorLetters = () => {
     const noExist = userLetters.filter(
       (letter) => word.includes(letter) === false
@@ -94,26 +84,16 @@ function App() {
 
         <main className="main">
           <section>
-            <SolutionLetters />
-            <div className="error">
-              <h2 className="title">Letras falladas:</h2>
-              <ul className="letters">{renderErrorLetters()}</ul>
-            </div>
-            <form className="form" onSubmit={handleSubmit}>
-              <label className="title" htmlFor="last-letter">
-                Escribe una letra:
-              </label>
-              <input
-                autoComplete="off"
-                className="form__input"
-                maxLength="1"
-                type="text"
-                name="last-letter"
-                id="last-letter"
-                onChange={handleInput}
-                value={lastLetter}
-              />
-            </form>
+            <SolutionLetters word= {word} 
+            userLetters={userLetters}  />
+            <ErrorLetters
+            renderErrorLetters={renderErrorLetters}
+            
+            />
+            <Form lastLetter={lastLetter}
+            handleSubmit={handleSubmit}  />
+          
+        
           </section>
           {/*         <button onClick={handleClick} className="btn-visible">
             Incrementar
