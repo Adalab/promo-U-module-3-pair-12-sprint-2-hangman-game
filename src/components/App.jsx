@@ -1,3 +1,4 @@
+import { Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 // import viteLogo from '/vite.svg'
 import callToApi from '../services/api'; // Importamos el servicio que acabamos de crear
@@ -7,8 +8,9 @@ import Dummy from './Dummy';
 import SolutionLetters from './SolutionLetters';
 import ErrorLetters from './ErrorLetters';
 import Form from './Form';
-
-
+import Footer from './Footer';
+import Instructions from './Instructions';
+import Options from './Options';
 
 function App() {
   let [numberOfErrors, setNumberOfErrors] = useState(0);
@@ -25,7 +27,6 @@ function App() {
     // Aquí ponemos un array vacío porque solo queremos que se llame a la API la primera vez
   }, []);
 
-  
   const renderErrorLetters = () => {
     const noExist = userLetters.filter(
       (letter) => word.includes(letter) === false
@@ -49,9 +50,8 @@ function App() {
     console.log(numberOfErrors);
   }; */
 
-  const handleInput = (ev) => {
-    console.log(ev.target.value);
-    const letterValue = ev.target.value.toLowerCase();
+  const handleInput = (value) => {
+    const letterValue = value.toLowerCase();
     const regex = /[a-zA-ZáéíóúüÁÉÍÓÚÜñÑ]/;
 
     if (letterValue === '' || regex.test(letterValue)) {
@@ -73,34 +73,29 @@ function App() {
     */
   };
 
-  const handleSubmit = (ev) => {
-    ev.preventDefault();
-  };
-
   return (
     <>
       <div className="page">
         <Header />
 
         <main className="main">
-          <section>
-            <SolutionLetters word= {word} 
-            userLetters={userLetters}  />
-            <ErrorLetters
-            renderErrorLetters={renderErrorLetters}
-            
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <section>
+                  <SolutionLetters word={word} userLetters={userLetters} />
+                  <ErrorLetters renderErrorLetters={renderErrorLetters} />
+                  <Form lastLetter={lastLetter} handleInput={handleInput} />
+                </section>
+              }
             />
-            <Form lastLetter={lastLetter}
-            handleSubmit={handleSubmit}  />
-          
-        
-          </section>
-          {/*         <button onClick={handleClick} className="btn-visible">
-            Incrementar
-          </button> */}
-
+            <Route path="/instructions" element={<Instructions />} />
+            <Route path="/options" element={<Options />} />
+          </Routes>
           <Dummy numberOfErrorsProp={numberOfErrors} />
         </main>
+        <Footer />
       </div>
     </>
   );
