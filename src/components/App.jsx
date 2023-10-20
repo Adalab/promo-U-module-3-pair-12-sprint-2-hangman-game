@@ -32,9 +32,9 @@ function App() {
       (letter) => word.includes(letter) === false
     );
 
-    if (noExist.length !== numberOfErrors) {
-      setNumberOfErrors(noExist.length);
-    }
+   
+    setNumberOfErrors(noExist.length);
+   
 
     return noExist.map((letter, index) => {
       return (
@@ -49,6 +49,14 @@ function App() {
     setNumberOfErrors(++numberOfErrors);
     console.log(numberOfErrors);
   }; */
+
+  const handleWord =(value)=> {
+ setWord(value)
+ setuserLetters([])
+ setLastLetter('')
+ 
+  }
+
 
   const handleInput = (value) => {
     const letterValue = value.toLowerCase();
@@ -91,7 +99,12 @@ function App() {
               }
             />
             <Route path="/instructions" element={<Instructions />} />
-            <Route path="/options" element={<Options />} />
+            <Route path="/options" element={<Options 
+            handleWord={handleWord}
+            word={word}
+            
+            />}
+           />
           </Routes>
           <Dummy numberOfErrorsProp={numberOfErrors} />
         </main>
